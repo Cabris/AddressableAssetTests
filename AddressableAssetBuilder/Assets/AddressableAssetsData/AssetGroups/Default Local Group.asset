@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: cb730f6cca8a74d4e8afbf9e9b791195
-  m_SerializeEntries:
-  - m_GUID: db0194d9b1534dd40b82536da2da7a27
-    m_Address: Assets/Scenes/LMtest.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 102900000, guid: db0194d9b1534dd40b82536da2da7a27, type: 3}
-    m_TargetAsset: {fileID: 102900000, guid: db0194d9b1534dd40b82536da2da7a27, type: 3}
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: cfa227a49c8dbef4992fa481314837c0, type: 2}
   m_SchemaSet:
