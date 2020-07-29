@@ -1,0 +1,1 @@
+rsync -a -e "ssh -i C:/Users/christ_chen/.ssh/vr-ad-dev-christ.pem" WebGL ubuntu@10.222.130.63:~/WebGL
