@@ -14,10 +14,6 @@ public class AssetLoader : MonoBehaviour
     [SerializeField]
     string AddressNameStr = "Mei_Run";
 
-    //[SerializeField]
-    //string AddressableScene = "test";
-
-
     public List<IResourceLocation> locations;
 
     void Start()
@@ -68,6 +64,7 @@ public class AssetLoader : MonoBehaviour
         AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync(AddressNameStr);
         handle.Completed += locationsLoaded;
     }
+
     void locationsLoaded(AsyncOperationHandle<IList<IResourceLocation>> obj)
     {
         Debug.Log("locationsLoaded ==> " + obj.Status);
@@ -133,10 +130,6 @@ public class AssetLoader : MonoBehaviour
                     Debug.LogError("result of " + AddressNameStr + " is null");
             };
         }
-
-
-
-
     }
 
 

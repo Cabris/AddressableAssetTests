@@ -619,10 +619,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 3c594e02-efca-433b-b885-a3be629e6fbe
+  cloudProjectId: b69d3269-c39c-4655-ad37-2e0e98ae3ba4
   framebufferDepthMemorylessMode: 0
-  projectName: AddressableAssetTest
-  organizationId: uv1300tw
+  projectName: AddressableAssetTest (1)
+  organizationId: christtabris
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

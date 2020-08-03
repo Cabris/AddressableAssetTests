@@ -276,6 +276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf956e2f3d9f7b41b8c40f65b0d71c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  catalogPath: http://192.168.50.54:8887/WebGL/catalog_2020.05.14.03.23.47.json
-  AddressNameStr: Assets/Scenes/LMtest.unity
-  _isScene: 1
+  catalogPath: http://localhost:8887/Assets_Arts_Characters_Prefab_Bear.prefab/WebGL/catalog_2020.08.03.05.45.27.json
+  AddressNameStr: Assets/Arts/Characters/Prefab/Bear.prefab
+  _isScene: 0

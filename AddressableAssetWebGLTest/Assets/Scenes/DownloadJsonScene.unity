@@ -192,7 +192,6 @@ GameObject:
   - component: {fileID: 975109623}
   - component: {fileID: 975109622}
   - component: {fileID: 975109621}
-  - component: {fileID: 975109624}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -264,15 +263,77 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &975109624
+--- !u!1 &1660715004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1660715005}
+  - component: {fileID: 1660715006}
+  - component: {fileID: 1660715007}
+  m_Layer: 0
+  m_Name: AALoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1660715005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660715004}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1660715006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 975109620}
+  m_GameObject: {fileID: 1660715004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ffe2f0c4ec104645912f150fb9c0d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inited: 0
+  OnAALoaderInited:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: WTC.Resource.AddressableAssetLoader+AddressableAssetLoaderEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnAALoaderInitFailed:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: WTC.Resource.AddressableAssetLoader+AddressableAssetLoaderEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &1660715007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660715004}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b967438f030f1f14bb31d0f387aef680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _downloadAtStart: 0
+  _configUrl: http://10.222.130.205:8080/Configs/AddressableAssetsBundles.json
+  _onConfigLoaded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: WTC.Resource.AAConfigDownloader+ConfigLoadedEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

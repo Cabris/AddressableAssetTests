@@ -11,6 +11,7 @@ namespace WTC
     {
         public static string BundleRootID = "DataRoot";
         public static string SettingPath = "Assets/AddressableAssetsData/AddressableAssetSettings.asset";
+        public static string AssetNameID = "AssetName";
 
     }
 
@@ -38,10 +39,12 @@ static class BuildAddressablesProcessor
         }
 
         string assetPath = AssetDatabase.GetAssetPath(target);
-        //Debug.Log("path: " + path);
         string guid = AssetDatabase.AssetPathToGUID(assetPath);
 
         AddressableAssetSettings settings = AssetDatabase.LoadAssetAtPath<AddressableAssetSettings>(WTC.AddressablesConstants.SettingPath);
+        var profile = settings.profileSettings;
+        var profileId = settings.activeProfileId;
+        var buildedDataRoot = profile.GetValueByName(profileId, WTC.AddressablesConstants.BundleRootID);
 
         var groups = settings.groups.ToArray();
         foreach (var g in groups)
@@ -59,28 +62,25 @@ static class BuildAddressablesProcessor
         var address = entry.address;
         var entryName = address.Replace("/", "_");
 
+        profile.SetValue(profileId, WTC.AddressablesConstants.AssetNameID, entryName);
+
         SwitchWebGL();
-        var webGlJson = CleanAndBuildAssets(settings);
+        var webGlJson = CleanAndBuildAssets(settings, buildedDataRoot);
         var remoteLoadPath = settings.RemoteCatalogLoadPath.GetValue(settings);
         Debug.Log("SwitchWebGL remoteLoadPath: " + remoteLoadPath);
-        webGlJson = remoteLoadPath + "/" + entryName + "/" + BuildTarget.WebGL.ToString() + "/" + webGlJson;
-
+        webGlJson = remoteLoadPath + "/" + webGlJson;
 
         SwitchAndroid();
-        var androidJson = CleanAndBuildAssets(settings);
+        var androidJson = CleanAndBuildAssets(settings, buildedDataRoot);
         remoteLoadPath = settings.RemoteCatalogLoadPath.GetValue(settings);
         Debug.Log("SwitchAndroid remoteLoadPath: " + remoteLoadPath);
-        androidJson = remoteLoadPath + "/" + entryName + "/" + BuildTarget.Android.ToString() + "/" + androidJson;
+        androidJson = remoteLoadPath + "/" + androidJson;
 
-
-        var profile = settings.profileSettings;
-        var profileId = settings.activeProfileId;
-        var DataRoot = profile.GetValueByName(profileId, WTC.AddressablesConstants.BundleRootID);
 
         string dataPath = Application.dataPath;
-        var fullPath = dataPath.Replace("/Assets", "") + "/" + DataRoot;
+        var bundleRootPath = dataPath.Replace("/Assets", "") + "/" + buildedDataRoot;
 
-        var entryPath = fullPath + "/" + entryName;
+        var entryPath = bundleRootPath + "/" + entryName;
 
         if (Directory.Exists(entryPath))
         {
@@ -88,7 +88,7 @@ static class BuildAddressablesProcessor
         }
         Directory.CreateDirectory(entryPath);
 
-        var sourcePath = fullPath + "/" + BuildTarget.WebGL.ToString();
+        var sourcePath = bundleRootPath + "/" + BuildTarget.WebGL.ToString();
         if (Directory.Exists(sourcePath))
         {
             var targetPath = entryPath + "/" + BuildTarget.WebGL.ToString();
@@ -96,7 +96,7 @@ static class BuildAddressablesProcessor
             Debug.Log("Directory.Move: " + sourcePath + " to " + targetPath);
         }
 
-        sourcePath = fullPath + "/" + BuildTarget.Android.ToString();
+        sourcePath = bundleRootPath + "/" + BuildTarget.Android.ToString();
         if (Directory.Exists(sourcePath))
         {
             var targetPath = entryPath + "/" + BuildTarget.Android.ToString();
@@ -104,21 +104,22 @@ static class BuildAddressablesProcessor
             Debug.Log("Directory.Move: " + sourcePath + " to " + targetPath);
         }
 
-
         AddressableAssetsConfigs configs = new AddressableAssetsConfigs();
         configs.WebGL = webGlJson;
         configs.Android = androidJson;
         configs.AddressableName = address;
-
+        configs.Type = AddressableAssetsConfigs.AssetType.Prefab;
         string jsonStr = JsonUtility.ToJson(configs);
 
-
-        string folderPath = assetPath.Replace("/Assets", "") + "/" + DataRoot + "/Indexes/"; // your code goes here
-        bool exists = Directory.Exists(folderPath);
+        string indexesPath = bundleRootPath + "/Indexes/"; // your code goes here
+        bool exists = Directory.Exists(indexesPath);
         if (!exists)
-            Directory.CreateDirectory(folderPath);
+        {
+            Debug.Log("CreateDirectory: " + indexesPath);
+            Directory.CreateDirectory(indexesPath);
+        }
 
-        var indexPath = folderPath + entryName + ".json";
+        var indexPath = indexesPath + entryName + ".json";
         Debug.Log("write json data path: " + indexPath);
 
         using (StreamWriter file =
@@ -127,24 +128,21 @@ static class BuildAddressablesProcessor
             file.WriteLine(jsonStr);
         }
 
+        profile.SetValue(profileId, WTC.AddressablesConstants.AssetNameID, "default");
 
+        //need upload to server
+        //entryPath, indexPath
+        //
     }
 
 
-    static private string CleanAndBuildAssets(AddressableAssetSettings settings)
+    static private string CleanAndBuildAssets(AddressableAssetSettings settings, string DataRoot)
     {
-
-        var profile = settings.profileSettings;
-        var profileId = settings.activeProfileId;
-        var DataRoot = profile.GetValueByName(profileId, WTC.AddressablesConstants.BundleRootID);
-        Debug.Log("DataRoot: " + DataRoot);
-
         string assetPath = Application.dataPath;
         string target = EditorUserBuildSettings.activeBuildTarget.ToString();
         var bundlePath = assetPath.Replace("/Assets", "") + "/" + DataRoot;
         bundlePath = bundlePath + "/" + target;
         Debug.Log("bundlePath: " + bundlePath);
-
 
         try
         {
@@ -182,13 +180,5 @@ static class BuildAddressablesProcessor
     {
         // Switch to WebGLbuild.
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
-    }
-
-    //[Serializable]
-    public class AddressableAssetsConfigs
-    {
-        public string AddressableName = "";
-        public string WebGL = "";
-        public string Android = "";
     }
 }

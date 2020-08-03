@@ -24,7 +24,7 @@ MonoBehaviour:
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: 01e9970fa41a1f847a50e44c23e2f5b8, type: 2}
-  - {fileID: 11400000, guid: adea38b48129e49419e7907f43715b21, type: 2}
+  - {fileID: 11400000, guid: 348fc71d7d653df48a8db68a2ea5f18e, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -48,6 +48,8 @@ MonoBehaviour:
         m_Value: http://localhost/[BuildTarget]
       - m_Id: 2e699abf837cf674284bd30d02930e4e
         m_Value: ServerData
+      - m_Id: 7e2e25b7792b4cb4188abd427dfedcb2
+        m_Value: default
     - m_InheritedParent: 
       m_Id: 7115fdc05e0bb0045a5d976a11e71c16
       m_ProfileName: localhost
@@ -64,6 +66,8 @@ MonoBehaviour:
         m_Value: http://127.0.0.1:8887/[BuildTarget]
       - m_Id: 2e699abf837cf674284bd30d02930e4e
         m_Value: ServerData
+      - m_Id: 7e2e25b7792b4cb4188abd427dfedcb2
+        m_Value: default
     - m_InheritedParent: 
       m_Id: b027d6bca0c900c4c8b7662b258f424a
       m_ProfileName: lanhost
@@ -80,6 +84,8 @@ MonoBehaviour:
         m_Value: http://192.168.50.54:8887/[BuildTarget]
       - m_Id: 2e699abf837cf674284bd30d02930e4e
         m_Value: ServerData
+      - m_Id: 7e2e25b7792b4cb4188abd427dfedcb2
+        m_Value: default
     - m_InheritedParent: 
       m_Id: 22b532bd5341f2240acf6666b33d69bb
       m_ProfileName: buildPipeLine
@@ -93,9 +99,11 @@ MonoBehaviour:
       - m_Id: 4f21195af9bfc5b42a4a757ba86d9fa7
         m_Value: '[DataRoot]/[BuildTarget]'
       - m_Id: 8366cd3825b36fa4eb8310dc9f7712cb
-        m_Value: http://192.168.50.54:8887
+        m_Value: http://localhost:8887/[AssetName]/[BuildTarget]
       - m_Id: 2e699abf837cf674284bd30d02930e4e
         m_Value: ServerData
+      - m_Id: 7e2e25b7792b4cb4188abd427dfedcb2
+        m_Value: default
     m_ProfileEntryNames:
     - m_Id: d371bd6c24d1a1e438ea79de3f963e79
       m_Name: BuildTarget
@@ -114,6 +122,9 @@ MonoBehaviour:
       m_InlineUsage: 0
     - m_Id: 2e699abf837cf674284bd30d02930e4e
       m_Name: DataRoot
+      m_InlineUsage: 0
+    - m_Id: 7e2e25b7792b4cb4188abd427dfedcb2
+      m_Name: AssetName
       m_InlineUsage: 0
     m_ProfileVersion: 1
   m_LabelTable:
