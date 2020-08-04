@@ -9,10 +9,10 @@ namespace WTC
 {
     public static class AddressablesConstants
     {
-        public static string BundleRootID = "DataRoot";
-        public static string SettingPath = "Assets/AddressableAssetsData/AddressableAssetSettings.asset";
-        public static string AssetNameID = "AssetName";
-
+        public static readonly string BundleRootID = "DataRoot";
+        public static readonly string SettingPath = "Assets/AddressableAssetsData/AddressableAssetSettings.asset";
+        public static readonly string AssetNameID = "AssetName";
+        public static readonly string GroupTemplete = "Group_Templete";
     }
 
 }
@@ -47,11 +47,18 @@ static class BuildAddressablesProcessor
         var buildedDataRoot = profile.GetValueByName(profileId, WTC.AddressablesConstants.BundleRootID);
 
         var groups = settings.groups.ToArray();
+        var groupTemp = settings.FindGroup(WTC.AddressablesConstants.GroupTemplete);
+        settings.DefaultGroup = groupTemp;
+
         foreach (var g in groups)
         {
-            if (!g.IsDefaultGroup())
+            if (!g.IsDefaultGroup() && g.Name != WTC.AddressablesConstants.GroupTemplete)
                 settings.RemoveGroup(g);
         }
+
+        var newDefaultGroupName = "default_group_"+ guid;
+        var newDefaultGroup = settings.CreateGroup(newDefaultGroupName, true, false, true, settings.DefaultGroup.Schemas, settings.DefaultGroup.SchemaTypes.ToArray());
+              
 
         string groupName = "Group_" + guid;
         var group = settings.FindGroup(groupName);

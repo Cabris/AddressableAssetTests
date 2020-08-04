@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: b917991b32c1ec642b9dc5dee08fa6b7
-  m_SerializeEntries:
-  - m_GUID: 7e7ce92afc7f3b44ea841ebd7a33a342
-    m_Address: New Scene
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 102900000, guid: 7e7ce92afc7f3b44ea841ebd7a33a342, type: 3}
-    m_TargetAsset: {fileID: 102900000, guid: 7e7ce92afc7f3b44ea841ebd7a33a342, type: 3}
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a0be81fb240e88d4388abf86ce5e637b, type: 2}
   m_SchemaSet:

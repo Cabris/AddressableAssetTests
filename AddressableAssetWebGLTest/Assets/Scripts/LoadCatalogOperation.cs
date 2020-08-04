@@ -7,6 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace WTC.Resource
 {
+
     class LoadCatalogOperation : AsyncOperationBase<AddressableAssetsConfigs>
     {
         private string _url;
@@ -15,7 +16,7 @@ namespace WTC.Resource
         float _progress;
         protected override float Progress => _progress;
 
-        public LoadCatalogOperation(string url):base()
+        public LoadCatalogOperation(string url) : base()
         {
             _url = url;
         }
@@ -37,13 +38,18 @@ namespace WTC.Resource
             }
             _progress = 0.5f;
 
-            var status = await LoadCatalog(_config);
-            if (status != AsyncOperationStatus.Succeeded)
+            if (_config.Type == AddressableAssetsConfigs.AssetType.Prefab)
             {
-                _progress = 1;
-                Complete(_config, false, "download catalog fail at url: " + _url);
-                return;
+                var status = await LoadCatalog(_config);
+                if (status != AsyncOperationStatus.Succeeded)
+                {
+                    _progress = 1;
+                    Complete(_config, false, "download catalog fail at url: " + _url);
+                    return;
+                }
             }
+            else
+                Debug.Log("not a prefab, skip load catalog");
             _progress = 1;
             Complete(_config, true, "download catalog success");
         }
@@ -71,6 +77,8 @@ namespace WTC.Resource
             catalogPath = configs.Android;
 #endif
 
+            catalogPath = AddressablesConsts.ParseDynamicPath(catalogPath);
+
             bool isComplete = false;
             AsyncOperationStatus status = AsyncOperationStatus.None;
             AsyncOperationHandle<IResourceLocator> handle = Addressables.LoadContentCatalogAsync(catalogPath);
@@ -92,7 +100,5 @@ namespace WTC.Resource
             await new WaitUntil(() => isComplete);
             return status;
         }
-
-
     }
 }

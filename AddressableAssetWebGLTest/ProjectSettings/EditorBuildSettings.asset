@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2c59bca41e3db984190506cd895afa73
+    path: Assets/Scenes/SlideTester.unity
+    guid: 558bc66533c62da4884ebd4cd42899b0
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 42c1261406646e9488e29446a5c08132,
       type: 2}

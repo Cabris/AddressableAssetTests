@@ -12,19 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
-  m_DefaultGroup: cb730f6cca8a74d4e8afbf9e9b791195
+  m_DefaultGroup: 1dfa71b53c888fd4e8b83daad270d120
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
   m_DisableCatalogUpdateOnStart: 0
-  m_UniqueBundleIds: 0
+  m_UniqueBundleIds: 1
   m_RemoteCatalogBuildPath:
     m_Id: 4f21195af9bfc5b42a4a757ba86d9fa7
   m_RemoteCatalogLoadPath:
     m_Id: 8366cd3825b36fa4eb8310dc9f7712cb
   m_overridePlayerVersion: 
   m_GroupAssets:
-  - {fileID: 11400000, guid: 01e9970fa41a1f847a50e44c23e2f5b8, type: 2}
-  - {fileID: 11400000, guid: 348fc71d7d653df48a8db68a2ea5f18e, type: 2}
+  - {fileID: 11400000, guid: 5ea48410deacf6f45897587f356c9a41, type: 2}
+  - {fileID: 11400000, guid: 56a3c08b82b01794fa3f4d904ddea7fe, type: 2}
+  - {fileID: 11400000, guid: 05a13b859f966154397edf6b0fa0ad8b, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -104,6 +105,24 @@ MonoBehaviour:
         m_Value: ServerData
       - m_Id: 7e2e25b7792b4cb4188abd427dfedcb2
         m_Value: default
+    - m_InheritedParent: 
+      m_Id: 9d8b9395b7231244898634c2206d559c
+      m_ProfileName: DynamicHost
+      m_Values:
+      - m_Id: d371bd6c24d1a1e438ea79de3f963e79
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: e0e1091e84888e944bdedd55b46e99a7
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: 1f3d764618fbfb7438dd6783d17c7dd6
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 4f21195af9bfc5b42a4a757ba86d9fa7
+        m_Value: '[DataRoot]/[BuildTarget]'
+      - m_Id: 8366cd3825b36fa4eb8310dc9f7712cb
+        m_Value: '{WTC.Resource.AddressablesConsts.RuntimePath}/[AssetName]/[BuildTarget]'
+      - m_Id: 2e699abf837cf674284bd30d02930e4e
+        m_Value: ServerData
+      - m_Id: 7e2e25b7792b4cb4188abd427dfedcb2
+        m_Value: Assets_models_Mei_Run.fbx
     m_ProfileEntryNames:
     - m_Id: d371bd6c24d1a1e438ea79de3f963e79
       m_Name: BuildTarget
@@ -144,7 +163,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2648525ca95f6ee49ba7ee67d49af007, type: 2}
   - {fileID: 11400000, guid: 68e01bf72733a684b8981ece2883fe86, type: 2}
   - {fileID: 11400000, guid: a8a692a57e5d3534192e4886a50df143, type: 2}
-  m_ActiveProfileId: 22b532bd5341f2240acf6666b33d69bb
+  m_ActiveProfileId: 9d8b9395b7231244898634c2206d559c
   m_HostingServicesManager:
     m_HostingServiceInfos: []
     m_Settings: {fileID: 11400000}

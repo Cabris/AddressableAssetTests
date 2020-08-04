@@ -1,16 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.ResourceManagement;
+﻿using UnityEngine.ResourceManagement;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.UI;
 
 namespace WTC.Resource
 {
     public class OperationManager : Singleton<OperationManager>
     {
-        [SerializeField]
-        string _url;
         ResourceManager _resourceManager;
 
         private void Start()
