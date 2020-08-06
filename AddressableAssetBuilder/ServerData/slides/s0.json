@@ -1,0 +1,12 @@
+{
+"Name":"slide#1",
+"Models":[
+"{WTC.Resource.AddressablesConsts.RuntimePath}/Indexes/Assets_models_Mira.fbx.json",
+"{WTC.Resource.AddressablesConsts.RuntimePath}/Indexes/Assets_Arts_Characters_Prefab_Bear.prefab.json",
+"{WTC.Resource.AddressablesConsts.RuntimePath}/Indexes/Assets_models_Mei_Run.fbx.json"
+],
+"Video360":"",
+"Video":"{WTC.Resource.AddressablesConsts.RuntimePath}/Indexes/video.json",
+"Image":"",
+"Image360":""
+}
