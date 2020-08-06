@@ -191,8 +191,8 @@ namespace WTC.Resource
                 if (task.Status == AsyncOperationStatus.Succeeded)
                 {
                     var result = task.Result;
-                    loadTask.OnPrefabDownloaded?.Invoke(result);
                     _loadedPrefabs.Add(AddressNameStr, result);
+                    OnAssetsPrefabLoaded(configs, result, loadTask);
                     Debug.Log("LoadAssetAsync is success, Result: " + result);
                 }
                 else
@@ -202,6 +202,13 @@ namespace WTC.Resource
                 }
             };
 
+        }
+
+        private void OnAssetsPrefabLoaded(AddressableAssetsConfigs configs,
+            GameObject prefab, ILoaderListener loadTask)
+        {
+            string AddressNameStr = configs.AddressableName;
+
             var h = Addressables.LoadAssetAsync<IList<AnimationClip>>(AddressNameStr);
             h.Completed += (task) =>
             {
@@ -210,10 +217,23 @@ namespace WTC.Resource
                 {
                     var result = task.Result;
                     Debug.Log("LoadAssetAsync AnimationClip is success, Result: " + result);
+                    var ani = prefab.GetComponent<Animation>();
+                    if (ani == null)
+                        ani = prefab.AddComponent<Animation>();
+                    ani.playAutomatically = false;
+                    //foreach (var clip in result)
+                    //{
+                    //    Debug.Log("Add AniClip" + clip.name);
+                    //    ani.AddClip(clip, clip.name);
+                    //    ani.clip = clip;
+                    //}
+
+                    loadTask.OnPrefabDownloaded?.Invoke(prefab);
                 }
                 else
                 {
                     Debug.LogWarning("LoadAssetAsync AnimationClip is Failed");
+                    loadTask.OnPrefabDownloaded?.Invoke(prefab);
                 }
             };
 

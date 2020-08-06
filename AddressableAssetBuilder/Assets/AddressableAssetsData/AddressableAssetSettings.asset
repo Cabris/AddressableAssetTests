@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
-  m_DefaultGroup: 53e1fce48154acf4f8415174820d8337
+  m_DefaultGroup: b8bd126e6e6546741bd1fe3904b2204b
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
   m_DisableCatalogUpdateOnStart: 0
@@ -24,8 +24,8 @@ MonoBehaviour:
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: 5ea48410deacf6f45897587f356c9a41, type: 2}
-  - {fileID: 11400000, guid: d1c04f42e08c9f54c9a34805d1e123f7, type: 2}
-  - {fileID: 11400000, guid: dac17d3f8040b2343abef6f3ce66b1ec, type: 2}
+  - {fileID: 11400000, guid: cc154b703c24fb842b67bb7008182245, type: 2}
+  - {fileID: 11400000, guid: 6bd4246cfa673894a9f65913846a8a1b, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1

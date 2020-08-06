@@ -10,22 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Group_fc342a2115fd1e746b8b8e30646e6c31
+  m_Name: default_group_0c5af40f566c22647bf53e1f8acd7592
   m_EditorClassIdentifier: 
-  m_GroupName: Group_fc342a2115fd1e746b8b8e30646e6c31
+  m_GroupName: default_group_0c5af40f566c22647bf53e1f8acd7592
   m_Data:
     m_SerializedData: []
-  m_GUID: 0c373d3b3cb3d284082f89ee2b8011b5
-  m_SerializeEntries:
-  - m_GUID: fc342a2115fd1e746b8b8e30646e6c31
-    m_Address: Assets/models/25000-Tri/source/model.fbx
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+  m_GUID: b8bd126e6e6546741bd1fe3904b2204b
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: cfa227a49c8dbef4992fa481314837c0, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 44c14c3690d89a34093db10c71784e8e, type: 2}
-    - {fileID: 11400000, guid: 4358e4d96209441499bf157cce7f94c4, type: 2}
+    - {fileID: 11400000, guid: 0f06e00bfdcfac94f856e302aaf2badb, type: 2}
+    - {fileID: 11400000, guid: 7ee7a55ba95b2c64d9cb4c80a7963863, type: 2}

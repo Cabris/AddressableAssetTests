@@ -8,6 +8,10 @@ public class VideoDiaplayer : MonoBehaviour, ILoaderListener
 {
     [SerializeField]
     UMP.UniversalMediaPlayer _player;
+
+    [SerializeField]
+    Renderer _imageRenderer, _image360Renderer;
+
     [SerializeField]
     JobStater _jobStater;
 
@@ -18,9 +22,10 @@ public class VideoDiaplayer : MonoBehaviour, ILoaderListener
 
     private void Awake()
     {
+        _imageRenderer.enabled = false;
+        _image360Renderer.enabled = false;
         OnConfigDownloaded += OnConfigLoaded;
         OnStartConfigDownload += OnStartConfigLoad;
-        _player.AddPlayingEvent(OnPlaying);
     }
 
     private void OnStartConfigLoad(string obj)
@@ -30,29 +35,44 @@ public class VideoDiaplayer : MonoBehaviour, ILoaderListener
 
     void OnConfigLoaded(AddressableAssetsConfigs config)
     {
-        if (config.Type == AddressableAssetsConfigs.AssetType.Video ||
-            config.Type == AddressableAssetsConfigs.AssetType.Video360)
+        if (config.Type == AddressableAssetsConfigs.AssetType.Video)
         {
+            _player.RenderingObjects = new GameObject[] { _imageRenderer.gameObject };
+            _imageRenderer.enabled = true;
             OnVideoUrlGet(AddressablesConsts.ParseDynamicPath(config.WebGL));
         }
+
+        if (config.Type == AddressableAssetsConfigs.AssetType.Video360)
+        {
+            _player.RenderingObjects = new GameObject[] { _image360Renderer.gameObject };
+            _image360Renderer.enabled = true;
+            OnVideoUrlGet(AddressablesConsts.ParseDynamicPath(config.WebGL));
+        }
+
     }
 
     void OnVideoUrlGet(string url)
     {
         Debug.Log("OnVideoUrlGet: " + url);
         _player.Path = url;
-        _player.Play();
-    }
-
-    void OnPlaying()
-    {
+        _player.Prepare();
         _jobStater.FinishJob();
     }
 
     public void Unload()
     {
+        _imageRenderer.enabled = false;
+        _image360Renderer.enabled = false;
         _player.Stop();
         _jobStater.Reset();
     }
 
+    public void Preview() {
+        _player.Play();
+    }
+
+    public void StopPreview()
+    {
+        _player.Stop();
+    }
 }

@@ -52,6 +52,16 @@ public class ModelDiaplayer : MonoBehaviour, ILoaderListener
             var go = Instantiate(prefab, _root, false);
             go.transform.localPosition = pos;
             _instances.Add(go);
+
+            var at = go.GetComponent<Animator>();
+            if (at != null)
+                at.speed = 0;
+
+            var ani = go.GetComponent<Animation>();
+            if (ani != null)
+            {
+                ani.Stop();
+            }
         }
         else
             Debug.LogError("prefab is null");
@@ -75,6 +85,36 @@ public class ModelDiaplayer : MonoBehaviour, ILoaderListener
         _configs.Clear();
 
         _jobStater.Reset();
+    }
+
+    public void Preview()
+    {
+        foreach (var i in _instances)
+        {
+            var at = i.GetComponent<Animator>();
+            if (at != null)
+                at.speed=1;
+            var ani = i.GetComponent<Animation>();
+            if (ani != null)
+            {
+                ani.Play();
+            }
+        }
+    }
+
+    public void StopPreview()
+    {
+        foreach (var i in _instances)
+        {
+            var at = i.GetComponent<Animator>();
+            if (at != null)
+                at.speed = 0;
+            var ani = i.GetComponent<Animation>();
+            if (ani != null)
+            {
+                ani.Stop();
+            }
+        }
     }
 
 }

@@ -19,18 +19,24 @@ public class FlyCamera : MonoBehaviour
     float shiftAdd = 250.0f; //multiplied by how long shift is held.  Basically running
     float maxShift = 1000.0f; //Maximum speed when holdin gshift
     float camSens = 0.25f; //How sensitive it with mouse
-    private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
+    private Vector3 lastMouseRot = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
 
     void Update()
     {
-        lastMouse = Input.mousePosition - lastMouse;
-        lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
-        lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
-        transform.eulerAngles = lastMouse;
-        lastMouse = Input.mousePosition;
-        //Mouse  camera angle done.  
+        lastMouseRot = Input.mousePosition - lastMouseRot;
+        lastMouseRot = new Vector3(-lastMouseRot.y * camSens, lastMouseRot.x * camSens, 0);
+        lastMouseRot = new Vector3(transform.eulerAngles.x + lastMouseRot.x, transform.eulerAngles.y + lastMouseRot.y, 0);
 
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            transform.eulerAngles = lastMouseRot;
+            //Mouse  camera angle done.  
+        }
+        lastMouseRot = Input.mousePosition;
+
+
+        
         //Keyboard commands
         float f = 0.0f;
         Vector3 p = GetBaseInput();

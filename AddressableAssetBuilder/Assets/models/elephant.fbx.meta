@@ -254,8 +254,34 @@ ModelImporter:
     2100008: Elephant_tusk
     4300000: Elephant
     9500000: //RootNode
+    11100000: //RootNode
     13700000: Elephant
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Elephant_body
+    second: {fileID: 2100000, guid: aa86cd09df623a34db59e96f2fa19c2b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Elephant_ears
+    second: {fileID: 2100000, guid: 82aefcc5047e3a94abc321d622e80a88, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Elephant_eye
+    second: {fileID: 2100000, guid: 2341eeef8ea855a44989a43f74678b83, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Elephant_head
+    second: {fileID: 2100000, guid: 219bed82f0882a9499956c9983d4866c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Elephant_tusk
+    second: {fileID: 2100000, guid: f0395915f8de65d4caa18520644ffe28, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -332,10 +358,10 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 1
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

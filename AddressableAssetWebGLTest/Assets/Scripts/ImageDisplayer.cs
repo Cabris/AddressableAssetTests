@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 using WTC.Resource;
 
 public class ImageDisplayer : MonoBehaviour, ILoaderListener
 {
     [SerializeField]
-    Renderer _imageRenderer;
-
+    Renderer _imageRenderer, _image360Renderer;
+     
     [SerializeField]
     JobStater _jobStater;
 
@@ -21,6 +19,8 @@ public class ImageDisplayer : MonoBehaviour, ILoaderListener
 
     private void Awake()
     {
+        _imageRenderer.enabled = false;
+        _image360Renderer.enabled = false;
         OnConfigDownloaded += OnConfigLoaded;
         OnStartConfigDownload += OnStartConfigLoad;
     }
@@ -32,24 +32,25 @@ public class ImageDisplayer : MonoBehaviour, ILoaderListener
 
     void OnConfigLoaded(AddressableAssetsConfigs config)
     {
-        if (config.Type == AddressableAssetsConfigs.AssetType.Image ||
-              config.Type == AddressableAssetsConfigs.AssetType.Image360)
-        {
-            OnImageUrlGet(AddressablesConsts.ParseDynamicPath(config.WebGL));
-        }
+        var path = AddressablesConsts.ParseDynamicPath(config.WebGL);
+
+        if (config.Type == AddressableAssetsConfigs.AssetType.Image)
+            OnImageUrlGet(path, _imageRenderer);
+
+        if (config.Type == AddressableAssetsConfigs.AssetType.Image360)
+            OnImageUrlGet(path, _image360Renderer);
     }
 
-    void OnImageUrlGet(string url)
+    void OnImageUrlGet(string url, Renderer renderer)
     {
         Debug.Log("OnImageUrlGet: " + url);
-        StartCoroutine(DownloadImage(url, OnTextureLoad));
-    }
-
-    void OnTextureLoad(Texture2D texture)
-    {
-        Debug.Log("OnTextureLoad: " + texture.width + ", " + texture.height);
-        _imageRenderer.material.mainTexture = texture;
-        _jobStater.FinishJob();
+        StartCoroutine(DownloadImage(url, (texture) =>
+        {
+            Debug.Log("OnTextureLoad: " + texture.width + ", " + texture.height);
+            renderer.material.mainTexture = texture;
+            renderer.enabled = true;
+            _jobStater.FinishJob();
+        }));
     }
 
     IEnumerator DownloadImage(string MediaUrl, Action<Texture2D> onComplete)
@@ -70,7 +71,8 @@ public class ImageDisplayer : MonoBehaviour, ILoaderListener
 
     public void Unload()
     {
-        _imageRenderer.material.mainTexture = null;
+        _imageRenderer.enabled = false;
+        _image360Renderer.enabled = false;
         _jobStater.Reset();
     }
 }

@@ -30,7 +30,7 @@ public class AsyncTester : MonoBehaviour
 
     private void Awake()
     {
-        AddressablesConsts.RuntimePath = "http://localhost:8887";
+        AddressablesConsts.RuntimePath = "http://10.222.132.159:7777";
     }
 
     public void OnRuntimePathChanged(string path)
@@ -58,6 +58,16 @@ public class AsyncTester : MonoBehaviour
         _modelDiaplayer.Unload();
         _imageDisplayer.Unload();
         _videoDiaplayer.Unload();
+    }
+
+    public void Preview() {
+        _modelDiaplayer.Preview();
+        _videoDiaplayer.Preview();
+    }
+
+    public void StopPreview() {
+        _modelDiaplayer.StopPreview();
+        _videoDiaplayer.StopPreview();
     }
 
     private void LoadModel(string modelConfigUrl)
