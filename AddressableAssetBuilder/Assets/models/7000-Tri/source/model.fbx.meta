@@ -1,0 +1,140 @@
+fileFormatVersion: 2
+guid: 5594a119e30583540b81f5914773a400
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: CATRig2Bone001
+    100002: CATRig2Bone001Bone001
+    100004: CATRig2Bone001Bone001Bone001
+    100006: CATRig2Bone001Bone001Bone001Bone001
+    100008: CATRig2Bone001Bone002
+    100010: CATRig2Bone001Bone002Bone001
+    100012: CATRig2Bone001Bone002Bone001Bone001
+    100014: CATRig2Bone002
+    100016: CATRig2Bone003
+    100018: CATRig2Bone003Bone001
+    100020: CATRig2Bone003Bone002
+    100022: CATRig5Bone001
+    100024: CATRigHub001
+    100026: CATRigTail1
+    100028: CATRigTail2
+    100030: CATRigTail3
+    100032: CATRigTail4
+    100034: CATRigTail5
+    100036: EyeBrow_1
+    100038: Eyebrow_2
+    100040: Nightmare_Mushroom_Lowpoly1
+    100042: //RootNode
+    400000: CATRig2Bone001
+    400002: CATRig2Bone001Bone001
+    400004: CATRig2Bone001Bone001Bone001
+    400006: CATRig2Bone001Bone001Bone001Bone001
+    400008: CATRig2Bone001Bone002
+    400010: CATRig2Bone001Bone002Bone001
+    400012: CATRig2Bone001Bone002Bone001Bone001
+    400014: CATRig2Bone002
+    400016: CATRig2Bone003
+    400018: CATRig2Bone003Bone001
+    400020: CATRig2Bone003Bone002
+    400022: CATRig5Bone001
+    400024: CATRigHub001
+    400026: CATRigTail1
+    400028: CATRigTail2
+    400030: CATRigTail3
+    400032: CATRigTail4
+    400034: CATRigTail5
+    400036: EyeBrow_1
+    400038: Eyebrow_2
+    400040: Nightmare_Mushroom_Lowpoly1
+    400042: //RootNode
+    2100000: PC_Nightmare_Mushroom
+    4300000: Nightmare_Mushroom_Lowpoly1
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: Nightmare_Mushroom_Lowpoly1
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

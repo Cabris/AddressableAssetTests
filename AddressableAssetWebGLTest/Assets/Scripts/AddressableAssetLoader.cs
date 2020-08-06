@@ -5,19 +5,20 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.Events;
-using UnityEngine.ResourceManagement;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
-
+using ResLocatsHandle = UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<System.Collections.Generic.IList<UnityEngine.ResourceManagement.ResourceLocations.IResourceLocation>>;
 
 namespace WTC.Resource
 {
 
     public class AddressableAssetLoader : Singleton<AddressableAssetLoader>
     {
+        //<url, config>
         Dictionary<string, AddressableAssetsConfigs> _loadedConfigs;
-
+        //<key, prefab>
         Dictionary<string, GameObject> _loadedPrefabs;
+        Dictionary<string, ResLocatsHandle> _loadedResLocats;
+        Dictionary<string, AsyncOperationHandle> _loadedDeps;
 
         [SerializeField]
         bool _inited = false;
@@ -28,10 +29,6 @@ namespace WTC.Resource
         [SerializeField]
         AddressableAssetLoaderEvent OnAALoaderInitFailed = new AddressableAssetLoaderEvent();
 
-        [SerializeField]
-        LoadRemoteResourceLocationsEvent OnRemoteResourceLocationsLoaded = new LoadRemoteResourceLocationsEvent();
-        [SerializeField]
-        DownloadDependenciesEvent OnDependenciesDownload = new DownloadDependenciesEvent();
 
         public bool Inited { get => _inited; private set => _inited = value; }
 
@@ -41,12 +38,13 @@ namespace WTC.Resource
             InitAddressables();
             _loadedConfigs = new Dictionary<string, AddressableAssetsConfigs>();
             _loadedPrefabs = new Dictionary<string, GameObject>();
+            _loadedResLocats = new Dictionary<string, ResLocatsHandle>();
+            _loadedDeps = new Dictionary<string, AsyncOperationHandle>();
         }
 
         void InitAddressables()
         {
             Debug.Log("initAddressables");
-            AddressablesConsts.RuntimePath = "http://localhost:8887";
             AsyncOperationHandle<IResourceLocator> handle = Addressables.InitializeAsync();
             handle.Completed += (obj) =>
             {
@@ -64,16 +62,17 @@ namespace WTC.Resource
             };
         }
 
-        public void LoadRemoteAsset(string configUrl, LoadAssetListener onLoaded)
+        public void LoadRemoteAsset(string configUrl, ILoaderListener loadTask)
         {
+            loadTask.OnStartConfigDownload?.Invoke(configUrl);
             if (_loadedConfigs.ContainsKey(configUrl))
             {
                 var config = _loadedConfigs[configUrl];
                 Debug.Log("reuse _loadedConfigs: " + configUrl);
-                onLoaded.OnConfigDownloaded?.Invoke(config);
+                loadTask.OnConfigDownloaded?.Invoke(config);
 
                 if (config.Type == AddressableAssetsConfigs.AssetType.Prefab)
-                    LoadAssetResouces(config, onLoaded);
+                    LoadAssetResouces(config, loadTask);
             }
             else
             {
@@ -87,21 +86,21 @@ namespace WTC.Resource
                         Debug.Log("LoadCatalogAsync [" + configUrl + "] is success, AddressableName: "
                             + config.AddressableName);
                         _loadedConfigs.Add(configUrl, config);
-                        onLoaded.OnConfigDownloaded?.Invoke(config);
+                        loadTask.OnConfigDownloaded?.Invoke(config);
                         if (task.Result.Type == AddressableAssetsConfigs.AssetType.Prefab)
-                            LoadAssetResouces(task.Result, onLoaded);
+                            LoadAssetResouces(task.Result, loadTask);
                     }
                     else
                     {
                         Debug.LogError("LoadCatalogAsync [" + configUrl + "] is failed");
-                        onLoaded.OnLoadFail?.Invoke();
+                        loadTask.OnLoadFail?.Invoke();
                     }
                 };
             }
 
         }
 
-        async void LoadAssetResouces(AddressableAssetsConfigs config, LoadAssetListener onLoaded)
+        private async void LoadAssetResouces(AddressableAssetsConfigs config, ILoaderListener loadTask)
         {
             Debug.Log("LoadAssetResouces: " + config.AddressableName);
 
@@ -109,26 +108,26 @@ namespace WTC.Resource
             {
                 if (_loadedPrefabs.ContainsKey(config.AddressableName))
                 {
-                    onLoaded.OnPrefabDownloaded?.Invoke(_loadedPrefabs[config.AddressableName]);
+                    loadTask.OnPrefabDownloaded?.Invoke(_loadedPrefabs[config.AddressableName]);
                     Debug.Log("reuse _loadedPrefabs: " + config.AddressableName);
                 }
                 else
                 {
-                    var status = await LoadResourceLocation(config);
-                    if (status != AsyncOperationStatus.Succeeded)
+                    var resHandle = await LoadResourceLocation(config, loadTask);
+                    if (resHandle.Status != AsyncOperationStatus.Succeeded)
                     {
-                        onLoaded.OnLoadFail?.Invoke();
+                        loadTask.OnLoadFail?.Invoke();
                         return;
                     }
 
-                    status = await LoadDependency(config);
-                    if (status != AsyncOperationStatus.Succeeded)
+                    var depHandle = await LoadDependency(config, loadTask);
+                    if (depHandle.Status != AsyncOperationStatus.Succeeded)
                     {
-                        onLoaded.OnLoadFail?.Invoke();
+                        loadTask.OnLoadFail?.Invoke();
                         return;
                     }
 
-                    LoadAssetsPrefab(config, onLoaded);
+                    LoadAssetsPrefab(config, loadTask);
 
                 }
             }
@@ -136,10 +135,10 @@ namespace WTC.Resource
 
         }
 
-        async Task<AsyncOperationStatus> LoadResourceLocation(AddressableAssetsConfigs configs)
+        private async Task<ResLocatsHandle> LoadResourceLocation(AddressableAssetsConfigs configs, ILoaderListener loadTask)
         {
             Debug.Log("LoadResourceLocation");
-            AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync(configs.AddressableName);
+            var handle = Addressables.LoadResourceLocationsAsync(configs.AddressableName);
             bool isCompleted = false;
 
             handle.Completed += (task) =>
@@ -147,7 +146,7 @@ namespace WTC.Resource
                 Debug.Log("LoadResourceLocationsAsync ==> " + task.Status);
                 if (task.Status == AsyncOperationStatus.Succeeded)
                 {
-                    OnRemoteResourceLocationsLoaded?.Invoke(task.Result);
+                    OnResourceLocationsLoaded(configs, task);
                 }
                 else
                 {
@@ -156,10 +155,10 @@ namespace WTC.Resource
                 isCompleted = true;
             };
             await new WaitUntil(() => isCompleted);
-            return handle.Status;
+            return handle;
         }
 
-        async Task<AsyncOperationStatus> LoadDependency(AddressableAssetsConfigs configs)
+        private async Task<AsyncOperationHandle> LoadDependency(AddressableAssetsConfigs configs, ILoaderListener loadTask)
         {
             Debug.Log("LoadDependency");
             AsyncOperationHandle handle = Addressables.DownloadDependenciesAsync(configs.AddressableName);
@@ -169,7 +168,7 @@ namespace WTC.Resource
                 Debug.Log("DownloadDependenciesAsync ==> " + task.Status);
                 if (task.Status == AsyncOperationStatus.Succeeded)
                 {
-                    OnDependenciesDownload?.Invoke(configs.AddressableName);
+                    OnDependenciesDownloaded(configs, task);
                 }
                 else
                 {
@@ -178,64 +177,133 @@ namespace WTC.Resource
                 isCompleted = true;
             };
             await new WaitUntil(() => isCompleted);
-            return handle.Status;
+            return handle;
         }
 
-        void LoadAssetsPrefab(AddressableAssetsConfigs configs, LoadAssetListener onLoaded)
+        private void LoadAssetsPrefab(AddressableAssetsConfigs configs, ILoaderListener loadTask)
         {
             string AddressNameStr = configs.AddressableName;
-                        
+
             AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(AddressNameStr);
             handle.Completed += (task) =>
             {
-                Debug.Log("LoadAssetAsync ==> " + task.Status);
+                Debug.Log("LoadAssetAsync " + AddressNameStr + " ==> " + task.Status);
                 if (task.Status == AsyncOperationStatus.Succeeded)
                 {
                     var result = task.Result;
-                    onLoaded.OnPrefabDownloaded?.Invoke(result);
+                    loadTask.OnPrefabDownloaded?.Invoke(result);
                     _loadedPrefabs.Add(AddressNameStr, result);
                     Debug.Log("LoadAssetAsync is success, Result: " + result);
                 }
                 else
                 {
                     Debug.LogError("LoadAssetAsync is Failed");
-                    onLoaded.OnLoadFail?.Invoke();
+                    loadTask.OnLoadFail?.Invoke();
+                }
+            };
+
+            var h = Addressables.LoadAssetAsync<IList<AnimationClip>>(AddressNameStr);
+            h.Completed += (task) =>
+            {
+                Debug.Log("LoadAssetAsync AnimationClip " + AddressNameStr + " ==> " + task.Status);
+                if (task.Status == AsyncOperationStatus.Succeeded)
+                {
+                    var result = task.Result;
+                    Debug.Log("LoadAssetAsync AnimationClip is success, Result: " + result);
+                }
+                else
+                {
+                    Debug.LogWarning("LoadAssetAsync AnimationClip is Failed");
                 }
             };
 
         }
 
+        private void OnResourceLocationsLoaded(AddressableAssetsConfigs configs, ResLocatsHandle handle)
+        {
+            _loadedResLocats.Add(configs.AddressableName, handle);
+        }
+
+        private void OnDependenciesDownloaded(AddressableAssetsConfigs configs, AsyncOperationHandle handle)
+        {
+            _loadedDeps.Add(configs.AddressableName, handle);
+        }
+
+        public void UnloadAsset(string key)
+        {
+            string rev = null;
+            foreach (var p in _loadedConfigs)
+            {
+                if (p.Value.AddressableName == key)
+                {
+                    UnloadAsset(p.Value);
+                    rev = p.Key;
+                    break;
+                }
+            }
+            _loadedConfigs.Remove(rev);
+        }
+
+        private void UnloadAsset(AddressableAssetsConfigs configs)
+        {
+            var prefab = _loadedPrefabs[configs.AddressableName];
+            Addressables.Release(prefab);
+            _loadedPrefabs.Remove(configs.AddressableName);
+
+            var resLocts = _loadedResLocats[configs.AddressableName];
+            Addressables.Release(resLocts);
+            _loadedResLocats.Remove(configs.AddressableName);
+
+            var deps = _loadedDeps[configs.AddressableName];
+            Addressables.Release(deps);
+            _loadedDeps.Remove(configs.AddressableName);
+        }
     }
 
-    [Serializable]
-    public class LoadAssetListener
+    public interface ILoaderListener
     {
-        public LoadRemotePrefabEvent OnPrefabDownloaded = new LoadRemotePrefabEvent();
+        Action<string> OnStartConfigDownload { get; set; }
+        Action<GameObject> OnPrefabDownloaded { get; set; }
+        Action<AddressableAssetsConfigs> OnConfigDownloaded { get; set; }
+        Action OnLoadFail { get; set; }
 
-        public LoadRemoteConfigEvent OnConfigDownloaded = new LoadRemoteConfigEvent();
-
-        public UnityEvent OnLoadFail = new UnityEvent();
+        //Action<AsyncOperationHandle<IList<IResourceLocation>>> OnResourceLocationsLoaded { get; set; }
+        //Action<AsyncOperationHandle> OnDependenciesDownloaded { get; set; }
     }
+
+
+    //[Serializable]
+    //public class LoadAssetTaskListener
+    //{
+    //    public LoadRemotePrefabEvent OnPrefabDownloaded = new LoadRemotePrefabEvent();
+
+    //    public LoadRemoteConfigEvent OnConfigDownloaded = new LoadRemoteConfigEvent();
+
+    //    public UnityEvent OnLoadAssetFail = new UnityEvent();
+
+    //}
+
+
+    //[Serializable]
+    //public class LoadRemotePrefabEvent : UnityEvent<GameObject>
+    //{ }
+
+    //[Serializable]
+    //public class LoadRemoteResourceLocationsEvent : UnityEvent<IList<IResourceLocation>>
+    //{ }
+
+    //[Serializable]
+    //public class DownloadDependenciesEvent : UnityEvent<string>
+    //{ }
 
     [Serializable]
     public class AddressableAssetLoaderEvent : UnityEvent<AddressableAssetLoader>
     { }
 
-    [Serializable]
-    public class LoadRemoteResourceLocationsEvent : UnityEvent<IList<IResourceLocation>>
-    { }
 
-    [Serializable]
-    public class DownloadDependenciesEvent : UnityEvent<string>
-    { }
-
-    [Serializable]
-    public class LoadRemotePrefabEvent : UnityEvent<GameObject>
-    { }
-
-    [Serializable]
-    public class LoadRemoteConfigEvent : UnityEvent<AddressableAssetsConfigs>
-    { }
+    //[Serializable]
+    //public class LoadRemoteConfigEvent : UnityEvent<AddressableAssetsConfigs>
+    //{ }
 
 }
 

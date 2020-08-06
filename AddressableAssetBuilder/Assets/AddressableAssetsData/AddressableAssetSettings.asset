@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
-  m_DefaultGroup: 1dfa71b53c888fd4e8b83daad270d120
+  m_DefaultGroup: 53e1fce48154acf4f8415174820d8337
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
   m_DisableCatalogUpdateOnStart: 0
@@ -24,8 +24,8 @@ MonoBehaviour:
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: 5ea48410deacf6f45897587f356c9a41, type: 2}
-  - {fileID: 11400000, guid: 56a3c08b82b01794fa3f4d904ddea7fe, type: 2}
-  - {fileID: 11400000, guid: 05a13b859f966154397edf6b0fa0ad8b, type: 2}
+  - {fileID: 11400000, guid: d1c04f42e08c9f54c9a34805d1e123f7, type: 2}
+  - {fileID: 11400000, guid: dac17d3f8040b2343abef6f3ce66b1ec, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -122,7 +122,7 @@ MonoBehaviour:
       - m_Id: 2e699abf837cf674284bd30d02930e4e
         m_Value: ServerData
       - m_Id: 7e2e25b7792b4cb4188abd427dfedcb2
-        m_Value: Assets_models_Mei_Run.fbx
+        m_Value: default
     m_ProfileEntryNames:
     - m_Id: d371bd6c24d1a1e438ea79de3f963e79
       m_Name: BuildTarget

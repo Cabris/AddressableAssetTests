@@ -1,4 +1,7 @@
-﻿public class AddressableAssetsConfigs
+﻿using System;
+
+[Serializable]
+public class AddressableAssetsConfigs
 {
     public string AddressableName = "";
     public string WebGL = "";

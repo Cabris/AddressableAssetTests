@@ -1,34 +1,23 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using WTC.Resource;
-using static WTC.Resource.AddressableAssetLoader;
 
 public class AsyncTester : MonoBehaviour
 {
+    [SerializeField]
+    ModelDiaplayer _modelDiaplayer;
+
+    [SerializeField]
+    ImageDisplayer _imageDisplayer;
+
+    [SerializeField]
+    VideoDiaplayer _videoDiaplayer;
 
     [SerializeField]
     string _slideUrl;
-
-    [SerializeField]
-    Transform _root;
-
-    [SerializeField]
-    Text _text;
-
-    [SerializeField]
-    float _rotateSpeed = 10;
-
-    float _startLoadTime = 0;
-
-    [SerializeField]
-    Renderer _imageRenderer;
-
-    [SerializeField]
-    UMP.UniversalMediaPlayer _player;
 
     string[] _slideUrls = {
         "/slides/s0.json",
@@ -37,43 +26,56 @@ public class AsyncTester : MonoBehaviour
         "/slides/s3.json"
     };
 
+    int _index = 0;
+
+    private void Awake()
+    {
+        AddressablesConsts.RuntimePath = "http://localhost:8887";
+    }
+
+    public void OnRuntimePathChanged(string path)
+    {
+        AddressablesConsts.RuntimePath = path;
+    }
+
     public void OnSlideSelected(int index)
     {
-        _slideUrl = WTC.Resource.AddressablesConsts.RuntimePath + _slideUrls[index];
+        _index = index;
     }
 
     public void OnLoadSlideClick()
     {
+        _slideUrl = AddressablesConsts.RuntimePath + _slideUrls[_index];
         Debug.Log("OnLoadSlideClick: " + _slideUrl);
+        UnloadAll();
         StartCoroutine(GetRequest(_slideUrl, OnSlideJsonLoaded));
     }
-       
-    private void UnloadAll() {
 
+    public void UnloadAll()
+    {
+        Debug.Log("UnloadAll");
+
+        _modelDiaplayer.Unload();
+        _imageDisplayer.Unload();
+        _videoDiaplayer.Unload();
     }
 
     private void LoadModel(string modelConfigUrl)
     {
         Debug.Log("LoadModel: " + modelConfigUrl);
-        var onLoaded = new LoadAssetListener();
-        onLoaded.OnPrefabDownloaded.AddListener(OnPrefabLoaded);
-        AddressableAssetLoader.Instance.LoadRemoteAsset(modelConfigUrl, onLoaded);
+        AddressableAssetLoader.Instance.LoadRemoteAsset(modelConfigUrl, _modelDiaplayer);
     }
 
     private void LoadVideo(string videoConfigUrl)
     {
         Debug.Log("LoadVideo: " + videoConfigUrl);
-        var onLoaded = new LoadAssetListener();
-        onLoaded.OnConfigDownloaded.AddListener(OnConfigLoaded);
-        AddressableAssetLoader.Instance.LoadRemoteAsset(videoConfigUrl, onLoaded);
+        AddressableAssetLoader.Instance.LoadRemoteAsset(videoConfigUrl, _videoDiaplayer);
     }
 
     private void LoadImage(string configUrl)
     {
         Debug.Log("LoadImage: " + configUrl);
-        var onLoaded = new LoadAssetListener();
-        onLoaded.OnConfigDownloaded.AddListener(OnConfigLoaded);
-        AddressableAssetLoader.Instance.LoadRemoteAsset(configUrl, onLoaded);
+        AddressableAssetLoader.Instance.LoadRemoteAsset(configUrl, _imageDisplayer);
     }
 
     private void OnSlideJsonLoaded(SlideConfigs slide)
@@ -140,76 +142,4 @@ public class AsyncTester : MonoBehaviour
             }
         }
     }
-
-    void OnConfigLoaded(AddressableAssetsConfigs config)
-    {
-        if (config.Type == AddressableAssetsConfigs.AssetType.Video ||
-            config.Type == AddressableAssetsConfigs.AssetType.Video360)
-        {
-            OnVideoUrlGet(AddressablesConsts.ParseDynamicPath(config.WebGL));
-        }
-
-        if (config.Type == AddressableAssetsConfigs.AssetType.Image ||
-              config.Type == AddressableAssetsConfigs.AssetType.Image360)
-        {
-            OnImageUrlGet(AddressablesConsts.ParseDynamicPath(config.WebGL));
-        }
-    }
-
-    void OnVideoUrlGet(string url)
-    {
-        Debug.Log("OnVideoUrlGet: " + url);
-        _player.Path = url;
-        _player.Play();
-
-    }
-
-    void OnImageUrlGet(string url)
-    {
-        Debug.Log("OnImageUrlGet: " + url);
-        StartCoroutine(DownloadImage(url, OnTextureLoad));
-    }
-
-    void OnTextureLoad(Texture2D texture)
-    {
-        Debug.Log("OnTextureLoad: " + texture.width + ", " + texture.height);
-        _imageRenderer.material.mainTexture = texture;
-    }
-
-    IEnumerator DownloadImage(string MediaUrl, Action<Texture2D> onComplete)
-    {
-        Debug.Log("DownloadImage: " + MediaUrl);
-
-        UnityWebRequest request = UnityWebRequestTexture.GetTexture(MediaUrl);
-        yield return request.SendWebRequest();
-        if (request.isNetworkError || request.isHttpError)
-            Debug.LogError(request.error);
-        else
-        {
-            Debug.Log("DownloadImage Done: " + request.downloadedBytes);
-            var tex = DownloadHandlerTexture.GetContent(request);
-            onComplete?.Invoke(tex);
-        }
-    }
-
-    void OnPrefabLoaded(GameObject prefab)
-    {
-        Debug.Log("OnPrefabLoaded: " + prefab);
-        if (prefab != null)
-        {
-            Vector3 pos = new Vector3(UnityEngine.Random.Range(1, -1), 0, UnityEngine.Random.Range(1, -1)) * 2f;
-            var go = Instantiate(prefab, _root, false);
-            go.transform.localPosition = pos;
-        }
-        else
-            Debug.LogError("prefab is null");
-    }
-
-
-
-    private void Update()
-    {
-        _root.Rotate(Vector3.up, _rotateSpeed * Time.deltaTime);
-    }
-
 }
