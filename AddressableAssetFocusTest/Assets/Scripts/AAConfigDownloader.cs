@@ -22,36 +22,39 @@ namespace WTC.Resource
         void Start()
         {
             if (_downloadAtStart)
-                StartCoroutine(GetRequest(ConfigUrl, _onConfigLoaded));
+                StartCoroutine(OperationManager.GetJsonRequest<AddressableAssetsConfigs>(ConfigUrl, (c) =>
+                {
+                    _onConfigLoaded?.Invoke(c);
+                }));
         }
 
-        public static IEnumerator GetRequest(string uri, ConfigLoadedEvent onComplete)
-        {
-            using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
-            {
-                // Request and wait for the desired page.
-                yield return webRequest.SendWebRequest();
+        //public static IEnumerator GetRequest(string uri, ConfigLoadedEvent onComplete)
+        //{
+        //    using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+        //    {
+        //        // Request and wait for the desired page.
+        //        yield return webRequest.SendWebRequest();
 
-                string[] pages = uri.Split('/');
-                int page = pages.Length - 1;
+        //        string[] pages = uri.Split('/');
+        //        int page = pages.Length - 1;
 
-                if (webRequest.isNetworkError)
-                {
-                    Debug.Log(pages[page] + ": Error: " + webRequest.error);
-                    onComplete?.Invoke(null);
-                }
-                else
-                {
-                    string data = webRequest.downloadHandler.text;
-                    Debug.Log(pages[page] + ":\nReceived: " + data);
-                    data = AddressablesConsts.ParseDynamicPath(data);
-                    var jsonObj = JsonUtility.FromJson<AddressableAssetsConfigs>(data);
-                    onComplete?.Invoke(jsonObj);
-                }
-            }
+        //        if (webRequest.isNetworkError)
+        //        {
+        //            Debug.Log(pages[page] + ": Error: " + webRequest.error);
+        //            onComplete?.Invoke(null);
+        //        }
+        //        else
+        //        {
+        //            string data = webRequest.downloadHandler.text;
+        //            Debug.Log(pages[page] + ":\nReceived: " + data);
+        //            data = AddressablesConsts.ParseDynamicPath(data);
+        //            var jsonObj = JsonUtility.FromJson<AddressableAssetsConfigs>(data);
+        //            onComplete?.Invoke(jsonObj);
+        //        }
+        //    }
 
 
-        }
+        //}
 
         [Serializable]
         public class ConfigLoadedEvent : UnityEvent<AddressableAssetsConfigs>

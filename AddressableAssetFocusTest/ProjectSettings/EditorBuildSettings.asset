@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SlideTset.unity
+    guid: f79cfb3011232a74f99b5008a3d87001
+  - enabled: 0
     path: Assets/Scenes/HSTest.unity
     guid: 562fd80b64342f041b33e609d623033b
   m_configObjects:

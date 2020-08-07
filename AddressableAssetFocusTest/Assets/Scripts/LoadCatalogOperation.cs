@@ -57,12 +57,10 @@ namespace WTC.Resource
         private async Task<AddressableAssetsConfigs> DownloadConfig(string url)
         {
             AddressableAssetsConfigs config = null;
-            var configLoaded = new AAConfigDownloader.ConfigLoadedEvent();
-            configLoaded.AddListener((c) =>
+            await OperationManager.GetJsonRequest<AddressableAssetsConfigs>(url, (c) =>
             {
                 config = c;
             });
-            await AAConfigDownloader.GetRequest(url, configLoaded);
             return config;
         }
 
@@ -70,14 +68,7 @@ namespace WTC.Resource
         {
             Debug.Log("LoadCatalog: " + configs.AddressableName);
             string assetName = configs.AddressableName;
-            string catalogPath = "";
-#if UNITY_WEBGL
-            catalogPath = configs.WebGL;
-#elif UNITY_ANDROID
-            catalogPath = configs.Android;
-#endif
-
-            catalogPath = AddressablesConsts.ParseDynamicPath(catalogPath);
+            string catalogPath = configs.CatalogPath;
 
             bool isComplete = false;
             AsyncOperationStatus status = AsyncOperationStatus.None;
