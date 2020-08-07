@@ -64,10 +64,12 @@ public class VideoDiaplayer : MonoBehaviour, ILoaderListener
         _imageRenderer.enabled = false;
         _image360Renderer.enabled = false;
         _player.Stop();
+        _player.Path = "";
         _jobStater.Reset();
     }
 
     public void Preview() {
+        if (_player.Path.Length>0)
         _player.Play();
     }
 

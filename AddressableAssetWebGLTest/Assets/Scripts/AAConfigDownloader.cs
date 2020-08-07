@@ -44,7 +44,7 @@ namespace WTC.Resource
                 {
                     string data = webRequest.downloadHandler.text;
                     Debug.Log(pages[page] + ":\nReceived: " + data);
-
+                    data = AddressablesConsts.ParseDynamicPath(data);
                     var jsonObj = JsonUtility.FromJson<AddressableAssetsConfigs>(data);
                     onComplete?.Invoke(jsonObj);
                 }
