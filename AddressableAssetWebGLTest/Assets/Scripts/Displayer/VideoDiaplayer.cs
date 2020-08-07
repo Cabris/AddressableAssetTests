@@ -35,18 +35,20 @@ public class VideoDiaplayer : MonoBehaviour, ILoaderListener
 
     void OnConfigLoaded(AddressableAssetsConfigs config)
     {
+        var path = config.CatalogPath;
+
         if (config.Type == AddressableAssetsConfigs.AssetType.Video)
         {
             _player.RenderingObjects = new GameObject[] { _imageRenderer.gameObject };
             _imageRenderer.enabled = true;
-            OnVideoUrlGet(AddressablesConsts.ParseDynamicPath(config.WebGL));
+            OnVideoUrlGet(path);
         }
 
         if (config.Type == AddressableAssetsConfigs.AssetType.Video360)
         {
             _player.RenderingObjects = new GameObject[] { _image360Renderer.gameObject };
             _image360Renderer.enabled = true;
-            OnVideoUrlGet(AddressablesConsts.ParseDynamicPath(config.WebGL));
+            OnVideoUrlGet(path);
         }
 
     }
@@ -68,9 +70,10 @@ public class VideoDiaplayer : MonoBehaviour, ILoaderListener
         _jobStater.Reset();
     }
 
-    public void Preview() {
-        if (_player.Path.Length>0)
-        _player.Play();
+    public void Preview()
+    {
+        if (_player.Path.Length > 0)
+            _player.Play();
     }
 
     public void StopPreview()

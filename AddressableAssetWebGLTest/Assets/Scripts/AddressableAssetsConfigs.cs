@@ -8,6 +8,18 @@ public class AddressableAssetsConfigs
     public string Android = "";
     public string Type = "";
 
+    public string CatalogPath
+    {
+        get
+        {
+#if UNITY_WEBGL
+            return WebGL;
+#elif UNITY_ANDROID
+            return Android;
+#endif
+        }
+    }
+
     public class AssetType
     {
         public const string Scene = "Scene";

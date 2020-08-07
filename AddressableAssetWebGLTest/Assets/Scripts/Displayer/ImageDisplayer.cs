@@ -8,7 +8,7 @@ public class ImageDisplayer : MonoBehaviour, ILoaderListener
 {
     [SerializeField]
     Renderer _imageRenderer, _image360Renderer;
-     
+
     [SerializeField]
     JobStater _jobStater;
 
@@ -32,8 +32,7 @@ public class ImageDisplayer : MonoBehaviour, ILoaderListener
 
     void OnConfigLoaded(AddressableAssetsConfigs config)
     {
-        var path = AddressablesConsts.ParseDynamicPath(config.WebGL);
-
+        var path = config.CatalogPath;
         if (config.Type == AddressableAssetsConfigs.AssetType.Image)
             OnImageUrlGet(path, _imageRenderer);
 

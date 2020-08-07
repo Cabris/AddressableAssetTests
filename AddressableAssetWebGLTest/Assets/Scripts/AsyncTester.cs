@@ -48,7 +48,7 @@ public class AsyncTester : MonoBehaviour
         _slideUrl = AddressablesConsts.RuntimePath + _slideUrls[_index];
         Debug.Log("OnLoadSlideClick: " + _slideUrl);
         UnloadAll();
-        StartCoroutine(GetRequest(_slideUrl, OnSlideJsonLoaded));
+        StartCoroutine(OperationManager.GetJsonRequest<SlideConfigs>(_slideUrl, OnSlideJsonLoaded));
     }
 
     public void UnloadAll()
@@ -60,12 +60,14 @@ public class AsyncTester : MonoBehaviour
         _videoDiaplayer.Unload();
     }
 
-    public void Preview() {
+    public void Preview()
+    {
         _modelDiaplayer.Preview();
         _videoDiaplayer.Preview();
     }
 
-    public void StopPreview() {
+    public void StopPreview()
+    {
         _modelDiaplayer.StopPreview();
         _videoDiaplayer.StopPreview();
     }
@@ -98,58 +100,34 @@ public class AsyncTester : MonoBehaviour
             Debug.Log("Parse Slide Models: " + slide.Models.Length);
             foreach (var url in slide.Models)
             {
-                LoadModel(AddressablesConsts.ParseDynamicPath(url));
+                LoadModel(url);
             }
 
             Debug.Log("Parse Slide Videos: " + slide.Video);
             if (slide.Video.Length > 0)
             {
-                LoadVideo(AddressablesConsts.ParseDynamicPath(slide.Video));
+                LoadVideo(slide.Video);
             }
 
             Debug.Log("Parse Slide Videos360: " + slide.Video360);
             if (slide.Video360.Length > 0)
             {
-                LoadVideo(AddressablesConsts.ParseDynamicPath(slide.Video360));
+                LoadVideo(slide.Video360);
             }
 
             Debug.Log("Parse Slide Image: " + slide.Image);
             if (slide.Image.Length > 0)
             {
-                LoadImage(AddressablesConsts.ParseDynamicPath(slide.Image));
+                LoadImage(slide.Image);
             }
 
             Debug.Log("Parse Slide Image360: " + slide.Image360);
             if (slide.Image360.Length > 0)
             {
-                LoadImage(AddressablesConsts.ParseDynamicPath(slide.Image360));
+                LoadImage(slide.Image360);
             }
         }
     }
 
-    private static IEnumerator GetRequest(string uri, Action<SlideConfigs> onComplete)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
-        {
-            // Request and wait for the desired page.
-            yield return webRequest.SendWebRequest();
 
-            string[] pages = uri.Split('/');
-            int page = pages.Length - 1;
-
-            if (webRequest.isNetworkError)
-            {
-                Debug.Log(pages[page] + ": Error: " + webRequest.error);
-                onComplete?.Invoke(null);
-            }
-            else
-            {
-                string data = webRequest.downloadHandler.text;
-                Debug.Log(pages[page] + ":\nReceived: " + data);
-
-                var jsonObj = JsonUtility.FromJson<SlideConfigs>(data);
-                onComplete?.Invoke(jsonObj);
-            }
-        }
-    }
 }
