@@ -48,7 +48,7 @@ public class AsyncTester : MonoBehaviour
         _slideUrl = AddressablesConsts.RuntimePath + _slideUrls[_index];
         Debug.Log("OnLoadSlideClick: " + _slideUrl);
         UnloadAll();
-        StartCoroutine(OperationManager.GetJsonRequest<SlideConfigs>(_slideUrl, OnSlideJsonLoaded));
+        OperationManager.GetJsonRequest<SlideConfigs>(_slideUrl, OnSlideJsonLoaded);
     }
 
     public void UnloadAll()

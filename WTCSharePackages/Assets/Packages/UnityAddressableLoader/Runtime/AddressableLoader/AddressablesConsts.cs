@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WTC.Resource
 {
-    static class AddressablesConsts
+    public static class AddressablesConsts
     {
         public static string RuntimePath { get; set; }
 
