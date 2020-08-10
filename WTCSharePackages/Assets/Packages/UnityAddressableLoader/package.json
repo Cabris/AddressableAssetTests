@@ -1,0 +1,14 @@
+{
+  "name": "com.unity.addressable_loader",
+  "version": "1.0.0",
+  "displayName": "WTC Addressable Asset Loader",
+  "description": "Asset Loader for addressable asset for WTC editor",
+  "unity": "2018.4",
+  "dependencies": {
+    "com.unity.addressables": "1.13.1"
+  },
+  "author": {
+    "name": "Christ_Chen",
+    "url": "https://github.com/Cabris/AddressableAssetTests"
+  }  
+}
