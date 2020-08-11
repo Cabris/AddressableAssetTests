@@ -7,7 +7,7 @@ using WTC.Resource;
 public class VideoDiaplayer : MonoBehaviour, ILoaderListener
 {
     [SerializeField]
-    UMP.UniversalMediaPlayer _player;
+    MediaPlayerCtrl _player;
 
     [SerializeField]
     Renderer _imageRenderer, _image360Renderer;
@@ -39,14 +39,14 @@ public class VideoDiaplayer : MonoBehaviour, ILoaderListener
 
         if (config.Type == AddressableAssetsConfigs.AssetType.Video)
         {
-            _player.RenderingObjects = new GameObject[] { _imageRenderer.gameObject };
+            _player.m_TargetMaterial = new GameObject[] { _imageRenderer.gameObject };
             _imageRenderer.enabled = true;
             OnVideoUrlGet(path);
         }
 
         if (config.Type == AddressableAssetsConfigs.AssetType.Video360)
         {
-            _player.RenderingObjects = new GameObject[] { _image360Renderer.gameObject };
+            _player.m_TargetMaterial = new GameObject[] { _image360Renderer.gameObject };
             _image360Renderer.enabled = true;
             OnVideoUrlGet(path);
         }
@@ -56,8 +56,7 @@ public class VideoDiaplayer : MonoBehaviour, ILoaderListener
     void OnVideoUrlGet(string url)
     {
         Debug.Log("OnVideoUrlGet: " + url);
-        _player.Path = url;
-        _player.Prepare();
+        _player.Load(url);
         _jobStater.FinishJob();
     }
 
@@ -66,13 +65,13 @@ public class VideoDiaplayer : MonoBehaviour, ILoaderListener
         _imageRenderer.enabled = false;
         _image360Renderer.enabled = false;
         _player.Stop();
-        _player.Path = "";
+        _player.m_strFileName = "";
         _jobStater.Reset();
     }
 
     public void Preview()
     {
-        if (_player.Path.Length > 0)
+        if (_player.m_strFileName.Length > 0)
             _player.Play();
     }
 
