@@ -48,7 +48,7 @@ public class ModelDiaplayer : MonoBehaviour, ILoaderListener
         Debug.Log("OnPrefabLoaded: " + prefab);
         if (prefab != null)
         {
-            Vector3 pos = new Vector3(UnityEngine.Random.Range(1, -1), 0, UnityEngine.Random.Range(1, -1)) * 2f;
+            Vector3 pos = new Vector3(UnityEngine.Random.Range(1, -1), 0, UnityEngine.Random.Range(1, -1)) * 0f;
             var go = Instantiate(prefab, _root, false);
             go.transform.localPosition = pos;
             _instances.Add(go);

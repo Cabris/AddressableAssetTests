@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: Group_0c5af40f566c22647bf53e1f8acd7592
   m_Data:
     m_SerializedData: []
-  m_GUID: 0e4d992d3e0902e458ebeb6e73a91148
+  m_GUID: 27072af911fadeb4cb38394354471382
   m_SerializeEntries:
   - m_GUID: 0c5af40f566c22647bf53e1f8acd7592
     m_Address: Assets/models/Mei_Run.fbx
@@ -27,5 +27,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: cfa227a49c8dbef4992fa481314837c0, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 6d70584c89a83d843aabf2c640a3d1f3, type: 2}
-    - {fileID: 11400000, guid: e01d301632c473945b5d9aefca047456, type: 2}
+    - {fileID: 11400000, guid: 0b02cf845cdf89f4fb3f08668bab5a75, type: 2}
+    - {fileID: 11400000, guid: 29578d5f1f0303b4a9bff116a847efe6, type: 2}

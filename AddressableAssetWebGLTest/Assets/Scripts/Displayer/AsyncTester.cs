@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using WTC.Resource;
 
 public class AsyncTester : MonoBehaviour
@@ -15,17 +16,25 @@ public class AsyncTester : MonoBehaviour
     [SerializeField]
     string _slideUrl;
 
+    [SerializeField]
+    Text _text;
+
     string[] _slideUrls = {
-        "/slides/s0.json",
-        "/slides/s1.json",
-        "/slides/s2.json",
-        "/slides/s3.json"
+        "/slides/m1.json",
+        "/slides/m2.json",
+        "/slides/m3.json",
+        "/slides/m4.json",
+        "/slides/m5.json",
+        "/slides/m6.json",
+        "/slides/m7.json",
+        "/slides/m8.json"
     };
 
     int _index = 0;
 
     private void Awake()
     {
+        //AddressablesConsts.RuntimePath = "http://127.0.0.1:8887";
         AddressablesConsts.RuntimePath = "http://10.222.132.159:7777";
     }
 
@@ -89,6 +98,7 @@ public class AsyncTester : MonoBehaviour
     private void OnSlideJsonLoaded(SlideConfigs slide)
     {
         Debug.Log("OnSlideJsonLoaded: " + slide);
+        _text.text = slide.Name;
         if (slide != null)
         {
             Debug.Log("Parse Slide: " + slide.Name);
