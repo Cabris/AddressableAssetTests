@@ -56,9 +56,9 @@ static class BuildAddressablesProcessor
                 settings.RemoveGroup(g);
         }
 
-        var newDefaultGroupName = "default_group_"+ guid;
+        var newDefaultGroupName = "default_group_" + guid;
         var newDefaultGroup = settings.CreateGroup(newDefaultGroupName, true, false, true, settings.DefaultGroup.Schemas, settings.DefaultGroup.SchemaTypes.ToArray());
-              
+
 
         string groupName = "Group_" + guid;
         var group = settings.FindGroup(groupName);
@@ -159,8 +159,9 @@ static class BuildAddressablesProcessor
             }
 
             Debug.Log("BuildAddressablesProcessor.BuildAssets[" + target + "] start");
-            AddressableAssetSettings.CleanPlayerContent(
-                AddressableAssetSettingsDefaultObject.Settings.ActivePlayerDataBuilder);
+            var bd = AddressableAssetSettingsDefaultObject.Settings.ActivePlayerDataBuilder;
+            Debug.Log("BuildAddressablesProcessor.BuildAssets: " + bd);
+            AddressableAssetSettings.CleanPlayerContent(bd);
             AddressableAssetSettings.BuildPlayerContent();
             Debug.Log("BuildAddressablesProcessor.BuildAssets[" + target + "] done");
 
